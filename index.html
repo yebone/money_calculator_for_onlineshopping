@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Exchanger</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+        li{
+            font-size: 2rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <section class="row container ms-5 mt-5">
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col">
+                <h1>Money Exchanger</h1>
+            </div>
+        </div>
+        
+
+        <div class="row mt-3">
+            <div class="col-3"></div>
+            <div class="col-3">
+                <label for="input" class=" form-label"  >Input USD</label>
+                <input type="number" name="input" id="input" class=" form-control text-end form-control-lg" placeholder="Input USD">
+            </div>
+            <div class="col-1">
+                <label for=""></label>
+                <button id="btn" class="btn btn-primary d-block mt-3">Calculate</button>
+            </div>
+            <div class="col-3">
+                <label for="output" class=" form-label">Output MMK</label>
+                <h1 id="output" class=" form-control form-control-lg text-end" >0 K</h1>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-3"></div>
+            <div class="col" id="process">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col border border-3 border-info rounded mt-5">
+                <h1>Rules</h1>
+                <ul>
+                    <li>X 2800k</li>
+                    <li>5$ အောက်    + 5000k</li>
+                    <li>5$ to 10$ ထိ + 6000k</li>
+                    <li>10$ to 20$ ထိ + 7000k</li>
+                    <li>20$ to 30$ အထက် + 8000k</li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        //variables
+        let input = document.querySelector('#input');
+        let output= document.querySelector('#output');
+        let calculate = document.querySelector('#btn');
+        let process = document.querySelector('#process')
+
+        //invoke
+        calculate.addEventListener('click',main);
+        input.addEventListener('keydown',function(e){
+            if(e.code == 'Enter'){
+                return main();
+            }
+        })
+        //function
+        function main(){
+            //exchange rate is 1$ - 2800 K 
+            let exchanged_to_MMK = input.value * 2800;
+            let result = exchanged_to_MMK;
+            
+            // +5000k if under 5$
+            if( input.value < 5 ){
+                result += 5000;
+
+            }else if ( input.value <= 10 ){
+                result += 6000;
+
+            }else if ( input.value <= 20 ){
+                result += 7000;
+
+            }else {
+                result += 8000;
+            }
+            process.innerHTML = `<h1>${input.value}$ x 2800(exchange rate) = ${exchanged_to_MMK}</h1> <h1>${exchanged_to_MMK} + ${result - exchanged_to_MMK }(profit) = ${result.toLocaleString()} K</h1>`;
+            result = Math.round( result / 1000 ) * 1000;
+            output.innerText = `${result.toLocaleString()} K`;
+            
+        }
+    </script>
+</body>
+</html>
